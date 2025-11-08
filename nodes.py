@@ -62,6 +62,14 @@ def load_config(config_filename="config.json"):
         with open(config_path, 'r') as f:
             config = json.load(f)
         logging.info(f"{LOG_PREFIX} Successfully loaded configuration from {config_filename}")
+
+        # add None to all lists
+        for key in config:
+            if isinstance(config[key], list):
+                none_entry = {"name": "None", "url": None}
+                if none_entry not in config[key]:
+                    config[key].insert(0, none_entry)
+
         return config
     except FileNotFoundError:
         logging.warning(f"{LOG_PREFIX} Configuration file '{config_path}' not found. Using default fallback configuration.")
