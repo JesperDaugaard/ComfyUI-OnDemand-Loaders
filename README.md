@@ -49,7 +49,7 @@ Search for "OnDemand-Loaders" in custom node list.
 
 After installation, create and configure a `config.json` file to list the models you want to access.
 
-1.  In the `ComfyUI/custom_nodes/ComfyUI-OnDemand-Loaders/` directory, create a file named `config.json`. You can use the `example/config.json` file as a template. If `config.json` does not exist, the nodes will fall back to a default example configuration.
+1.  In the `ComfyUI/custom_nodes/ComfyUI-OnDemand-Loaders/` directory, create a file named `config.json`. You can use the `example/config.json` file as a template. If `config.json` does not exist, the nodes will fall back to a default example configuration. You can specify the full path to the config file using the environment variable `ONDEMAND_LOADERS_CONFIG_PATH`.
 2.  Add your models to `config.json`, organized by type (`loras`, `checkpoints`, `vae_models`, etc.). Each entry requires a `name` (which will appear in the node's dropdown menu) and a `url` (the Civitai/HuggingFace **download** link).
 
 You can get the download link from a model's page on Civitai/HuggingFace by right-clicking the download button and copying the link address.

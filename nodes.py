@@ -53,8 +53,13 @@ else:
 # Function to load configuration 
 def load_config(config_filename="config.json"):
     
-    current_dir = os.path.dirname(__file__)
-    config_path = os.path.join(current_dir, config_filename)
+    config_path_env = os.environ.get('ONDEMAND_LOADERS_CONFIG_PATH')
+    if config_path_env and os.path.exists(config_path_env):
+        config_path = config_path_env
+        config_filename = os.path.basename(config_path)
+    else:
+        current_dir = os.path.dirname(__file__)
+        config_path = os.path.join(current_dir, config_filename)
     
     default_config = { 
         "loras": [
