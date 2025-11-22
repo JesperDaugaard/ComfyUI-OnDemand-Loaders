@@ -59,6 +59,7 @@ def _transform_data_to_loras_structure(data):
                     is_model_type = True
                     download_url = version.get("downloadUrl")
                     trigger_words = version.get("trainedWords")
+                    base_model = version.get("baseModel")
 
             if is_model_type and download_url:
                 new_name = f"{main_model_name} - {version_name}"
@@ -69,7 +70,8 @@ def _transform_data_to_loras_structure(data):
                     "author": model_author,
                     "trigger_words": trigger_words,
                     "url": download_url,
-                    "id": model_id
+                    "id": model_id,
+                    "base_model": base_model
                 })
 
     return {
@@ -160,7 +162,6 @@ async def lora_changed_handler(request):
     data = await request.json()
     lora_name = data.get("lora_name")
     if lora_name:
-        print(f"[OnDemandLoader] The user selected '{lora_name}'")
         if LORA_CONFIG:
             found_lora = next((lora for lora in LORA_CONFIG.get("loras", []) if lora["name"] == lora_name), None)
 

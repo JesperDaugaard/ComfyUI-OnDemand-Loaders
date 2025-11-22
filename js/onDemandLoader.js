@@ -26,58 +26,50 @@ function addOrUpdateLoraInfoWidgets(node, loraInfo) {
 	if (loraInfo.name !== "None") {
 
 		if (loraInfo.author) {
-			const authorWidget = node.widgets.find((w) => w.name === "author");
-			if (!authorWidget) {
-				const w = ComfyWidgets["STRING"](node, "author", ["STRING", { multiline: false }], app).widget;
-				w.inputEl.readOnly = true;
-				w.inputEl.style.opacity = 0.8;
-				w.value = loraInfo.author;
-			} else {
-				authorWidget.value = loraInfo.author;
-				authorWidget.hidden = false;
-			}
+			addOrUpdateWidget(node, "author", loraInfo.author);
 		}
 
-		if (loraInfo.trigger_words) {
-			const triggerWordsWidget = node.widgets.find((w) => w.name === "trigger_words");
-			if (!triggerWordsWidget) {
-				const w = ComfyWidgets["STRING"](node, "trigger_words", ["STRING", { multiline: true }], app).widget;
-				w.inputEl.readOnly = true;
-				w.inputEl.style.opacity = 0.8;
-				w.value = loraInfo.trigger_words.join(', ');
-			} else {
-				triggerWordsWidget.value = loraInfo.trigger_words.join(', ');
-				triggerWordsWidget.hidden = false;
-			}
+		if (loraInfo.trigger_words && loraInfo.trigger_words.length > 0) {
+			addOrUpdateWidget(node, "trigger_words", loraInfo.trigger_words.join(', '), "STRING", true);
 		}
+
 		if (loraInfo.id) {
-			const urlWidget = node.widgets.find((w) => w.name === "url");
-			if (!urlWidget) {
-				const w = ComfyWidgets["MARKDOWN"](node, "url", ["STRING", { multiline: false }], app).widget;
-				w.inputEl.readOnly = true;
-				w.inputEl.style.opacity = 0.8;
-				w.value = `[Civitai Model URL](https://civitai.com/models/${loraInfo.id})`;
-			} else {
-				urlWidget.value = `[Civitai Model URL](https://civitai.com/models/${loraInfo.id})`;
-				urlWidget.hidden = false;
-			}
+			const urlValue = `[Civitai Model URL](https://civitai.com/models/${loraInfo.id})`;
+			addOrUpdateWidget(node, "url", urlValue, "MARKDOWN", false);
+		}
+
+		if (loraInfo.base_model) {
+			addOrUpdateWidget(node, "base_model", loraInfo.base_model);
 		}
 	} else {
-		const authorWidget = node.widgets.find((w) => w.name === "author");
-		if (authorWidget) {
-			authorWidget.hidden = true;
-		}
-		const triggerWordsWidget = node.widgets.find((w) => w.name === "trigger_words");
-		if (triggerWordsWidget) {
-			triggerWordsWidget.hidden = true;
-		}
-		const urlWidget = node.widgets.find((w) => w.name === "url");
-		if (urlWidget) {
-			urlWidget.hidden = true;
-		}
+		hideWidgetIfExists(node, "author");
+		hideWidgetIfExists(node, "trigger_words");
+		hideWidgetIfExists(node, "url");
+		hideWidgetIfExists(node, "base_model");
 	}
 	node.computeSize();
 }
+
+function hideWidgetIfExists(node, widgetName) {
+	const w = node.widgets.find((w) => w.name === widgetName);
+	if (w) {
+		w.hidden = true;
+	}
+}
+
+function addOrUpdateWidget(node, widgetName, value, type = "STRING", multiline = false) {
+	const w = node.widgets.find((w) => w.name === widgetName);
+	if (!w) {
+		const newW = ComfyWidgets[type](node, widgetName, ["STRING", { multiline: multiline }], app).widget;
+		newW.inputEl.readOnly = true;
+		newW.inputEl.style.opacity = 0.8;
+		newW.value = value;
+	} else {
+		w.value = value
+		w.hidden = false;
+	}
+}
+
 
 
 app.registerExtension({
