@@ -98,15 +98,19 @@ class OnDemandCivitaiLikedLoraLoader:
     @classmethod
     def INPUT_TYPES(cls):
         loras = { "loras": [] }
+        base_models = []
         global LORA_CONFIG
         LORA_CONFIG = _get_lora_config()
         if LORA_CONFIG:
             loras = [lora["name"] for lora in LORA_CONFIG.get("loras", []) ]
+            base_models = sorted(list(set(lora.get("base_model", "Unknown") for lora in LORA_CONFIG.get("loras", []) )))
+            base_models.insert(0, "Any")
        
         return {
             "required": {
                 "model": ("MODEL",),
                 "lora_name": (loras,),
+                "filter": (base_models,),
                 "strength_model": ("FLOAT", {"default": 1.0, "min": -10.0, "max": 10.0, "step": 0.01}),
                 "strength_clip": ("FLOAT", {"default": 1.0, "min": -10.0, "max": 10.0, "step": 0.01}),
             },
@@ -123,7 +127,7 @@ class OnDemandCivitaiLikedLoraLoader:
 
     CATEGORY = "loaders"
 
-    def download_lora(self, model, lora_name, strength_model, strength_clip, clip=None, api_key=None, download_chunks=None):
+    def download_lora(self, model, lora_name, filter, strength_model, strength_clip, clip=None, api_key=None, download_chunks=None):
         self.lora_loader = LoraLoader()
 
         global LORA_CONFIG
@@ -183,3 +187,18 @@ async def get_selected_lora_info_handler(request):
         return web.Response(status=200, text=json.dumps(SELECTED_LORA, indent=4), content_type='application/json')
     else:
         return web.Response(status=404, text=json.dumps({"error": "No LoRA selected yet."}), content_type='application/json')
+
+@server.PromptServer.instance.routes.post("/on_demand_loader/filter_changed")
+async def lora_changed_handler(request):
+    global LORA_CONFIG
+    data = await request.json()
+    filter = data.get("filter")
+    loras = []    
+    if LORA_CONFIG:
+        if filter != "Any":
+            loras = [lora for lora in LORA_CONFIG.get("loras", []) if lora.get("base_model") == filter]
+        else:
+            loras = [lora for lora in LORA_CONFIG.get("loras", []) ]
+    else:
+        logger.error("LORA_CONFIG is not loaded.")
+    return web.Response(status=200, text=json.dumps(loras, indent=4), content_type='application/json')

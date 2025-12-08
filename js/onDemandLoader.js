@@ -23,6 +23,27 @@ async function onLoraChanged(node, lora_name) {
     }
 }
 
+async function onFilterChanged(node, filter) {
+    try {
+        const response = await api.fetchApi("/on_demand_loader/filter_changed", {
+            method: "POST",
+            body: JSON.stringify({ filter }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (response.status !== 200) {
+            console.error(`[ComfyUI-OnDemand-Loaders] Failed to notify backend of filter change: ${response.status}`);
+        } else {
+			const filteredLoras = await response.json();
+			const w = node.widgets.find((w) => w.name === "lora_name")
+			w.options.values = filteredLoras.map(lora => lora.name);
+		}
+    } catch (e) {
+        console.error("[ComfyUI-OnDemand-Loaders] Failed to notify backend of filter change", e);
+    }
+}
+
 function addOrUpdateLoraInfoWidgets(node, loraInfo) {
 	if (loraInfo.name !== "None") {
 
@@ -112,6 +133,13 @@ app.registerExtension({
 								onLoraChanged(this, selectedItem);
 							}
 						});
+					};
+				}
+
+				const filterWidget = this.widgets.find((w) => w.name === "filter");
+				if (filterWidget) {
+					filterWidget.callback = (value) => {
+						onFilterChanged(this, value);
 					};
 				}
 				

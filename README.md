@@ -150,6 +150,11 @@ This project uses JavaScript and CSS code from [Comfyui-Resolution-Master](https
 
 ## Changelog
 
+### 1.0.15
+
+- **New Feature**:
+    - Added filter by Base Model on `OnDemand Civitai Liked Lora Loader` node.
+
 ### 1.0.14
 
 - **New Nodes**:
