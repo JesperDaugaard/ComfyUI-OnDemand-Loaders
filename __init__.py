@@ -1,4 +1,4 @@
-from .nodes import OnDemandLoraLoader, OnDemandUNETLoader, OnDemandCheckpointLoader, OnDemandVAELoader, OnDemandCLIPLoader, OnDemandGGUFLoader, OnDemandControlNetLoader, OnDemandDualCLIPLoader, OnDemandCLIPVisionLoader
+from .nodes import OnDemandLoraLoader, OnDemandUNETLoader, OnDemandCheckpointLoader, OnDemandVAELoader, OnDemandCLIPLoader, OnDemandGGUFLoader, OnDemandControlNetLoader, OnDemandDualCLIPLoader, OnDemandCLIPVisionLoader, OnDemandModelPatchLoader
 from .lora_node import OnDemandCivitaiLikedLoraLoader
 
 NODE_CLASS_MAPPINGS = {
@@ -11,7 +11,8 @@ NODE_CLASS_MAPPINGS = {
     "OnDemandCLIPVisionLoader": OnDemandCLIPVisionLoader,
     "OnDemandGGUFLoader": OnDemandGGUFLoader,
     "OnDemandControlNetLoader": OnDemandControlNetLoader,
-    "OnDemandCivitaiLikedLoraLoader": OnDemandCivitaiLikedLoraLoader
+    "OnDemandCivitaiLikedLoraLoader": OnDemandCivitaiLikedLoraLoader,
+    "OnDemandModelPatchLoader": OnDemandModelPatchLoader
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -24,7 +25,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "OnDemandCLIPVisionLoader": "OnDemand CLIP Vision Loader",
     "OnDemandGGUFLoader": "OnDemand GGUF Loader",
     "OnDemandControlNetLoader": "OnDemand ControlNet Loader",
-    "OnDemandCivitaiLikedLoraLoader": "OnDemand Civitai Liked Lora Loader"
+    "OnDemandCivitaiLikedLoraLoader": "OnDemand Civitai Liked Lora Loader",
+    "OnDemandModelPatchLoader": "OnDemand Model Patch Loader"
 }
 
 WEB_DIRECTORY = "./js"
@@ -32,6 +34,6 @@ WEB_DIRECTORY = "./js"
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', "WEB_DIRECTORY"]
 
 # Module metadata
-__version__ = "1.0.13"
+__version__ = "1.0.14"
 __author__ = "francarl"
 __description__ = "A suite of nodes for on-demand loading of Diffusion Models, VAE, Clip and Loras in ComfyUI."

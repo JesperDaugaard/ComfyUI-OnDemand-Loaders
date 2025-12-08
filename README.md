@@ -150,6 +150,11 @@ This project uses JavaScript and CSS code from [Comfyui-Resolution-Master](https
 
 ## Changelog
 
+### 1.0.14
+
+- **New Nodes**:
+    - Added `OnDemand Model Patch Loader Loader` for z-image model patch controlnet loading
+
 ### 1.0.13
 
 - **New Feature**:

@@ -58,5 +58,11 @@
             "name": "Qwen-Image-InstantX-ControlNet-Union",
             "url": "https://huggingface.co/Comfy-Org/Qwen-Image-InstantX-ControlNets/resolve/main/split_files/controlnet/Qwen-Image-InstantX-ControlNet-Union.safetensors"
         }
+    ],
+    "model_patches": [
+        {
+            "name": "Z-Image-Turbo-Fun-Controlnet-Union",
+            "url": "https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union.safetensors"
+        }
     ]
 }
