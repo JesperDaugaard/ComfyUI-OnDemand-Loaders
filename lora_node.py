@@ -196,7 +196,7 @@ async def lora_changed_handler(request):
     loras = []    
     if LORA_CONFIG:
         if filter != "Any":
-            loras = [lora for lora in LORA_CONFIG.get("loras", []) if lora.get("base_model") == filter]
+            loras = [lora for lora in LORA_CONFIG.get("loras", []) if lora.get("base_model") == filter or lora.get("name") == "None" ]
         else:
             loras = [lora for lora in LORA_CONFIG.get("loras", []) ]
     else:
