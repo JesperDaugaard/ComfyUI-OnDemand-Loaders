@@ -150,6 +150,11 @@ This project uses JavaScript and CSS code from [Comfyui-Resolution-Master](https
 
 ## Changelog
 
+### 1.0.17
+
+- **Bug Fixes**:
+    - Fixed retriving model loras in Civitai Liked Lora Loader
+
 ### 1.0.16
 
 - **Bug Fixes**:

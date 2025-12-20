@@ -56,30 +56,26 @@ def _transform_data_to_loras_structure(items):
         for version in model_versions:
             version_name = version.get("name", "")
             version_files = version.get("files", [])
-            
-            download_url = None
-            is_model_type = False
-            
+       
             if version_files:
-                first_file = version_files[0]
-                if first_file.get("type") == "Model":
-                    is_model_type = True
-                    download_url = version.get("downloadUrl")
-                    trigger_words = version.get("trainedWords")
-                    base_model = version.get("baseModel")
-
-            if is_model_type and download_url:
-                new_name = f"{main_model_name} - {version_name}"
-                
-                loras_list.append({
-                    "name": new_name,
-                    # "description": model_description,
-                    "author": model_author,
-                    "trigger_words": trigger_words,
-                    "url": download_url,
-                    "id": model_id,
-                    "base_model": base_model
-                })
+                for file in version_files:
+                    if file.get("type") == "Model":
+                        is_model_type = True
+                        download_url = file.get("downloadUrl")
+                        trigger_words = version.get("trainedWords")
+                        base_model = version.get("baseModel")
+                        
+                        new_name = f"{main_model_name} - {version_name}"
+                        
+                        loras_list.append({
+                            "name": new_name,
+                            # "description": model_description,
+                            "author": model_author,
+                            "trigger_words": trigger_words,
+                            "url": download_url,
+                            "id": model_id,
+                            "base_model": base_model
+                        })
 
     return {
         "loras": loras_list
